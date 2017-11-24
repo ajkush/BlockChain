@@ -1,0 +1,116 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+networks:
+  byfn:
+services:
+  ca0:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-org1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.decret.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/caf716cf7264dea8e82ebed28039eb8e2cc16554dc67b2df66fd8e99bae3ed3b_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.decret.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/caf716cf7264dea8e82ebed28039eb8e2cc16554dc67b2df66fd8e99bae3ed3b_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/org1.decret.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerOrg1
+    networks:
+      - byfn
+
+  ca1:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-org2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.decret.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/9b07459dd6b0b4954c16fe00a780a9dcab8b08b7f21fb07c8b7a303383639a53_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org2.decret.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/9b07459dd6b0b4954c16fe00a780a9dcab8b08b7f21fb07c8b7a303383639a53_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/org2.decret.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerOrg2
+    networks:
+      - byfn
+  ca1:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-org3
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org3.decret.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/9b07459dd6b0b4954c16fe00a780a9dcab8b08b7f21fb07c8b7a303383639a53_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org3.decret.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/9b07459dd6b0b4954c16fe00a780a9dcab8b08b7f21fb07c8b7a303383639a23_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/org3.decret.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerOrg3
+    networks:
+      - byfn
+
+  orderer.decret.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.decret.com
+    container_name: orderer.decret.com
+    networks:
+      - byfn
+
+  peer0.org1.decret.com:
+    container_name: peer0.org1.decret.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.org1.decret.com
+    networks:
+      - byfn
+
+  peer1.org1.decret.com:
+    container_name: peer1.org1.decret.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.org1.decret.com
+    networks:
+      - byfn
+
+  peer0.org2.decret.com:
+    container_name: peer0.org2.decret.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.org2.decret.com
+    networks:
+      - byfn
+
+  peer1.org2.decret.com:
+    container_name: peer1.org2.decret.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.org2.decret.com
+    networks:
+      - byfn
+
+
+  peer0.org3.decret.com:
+    container_name: peer0.org3.decret.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.org3.decret.com
+    networks:
+      - byfn
+
+  peer1.org3.decret.com:
+    container_name: peer1.org3.decret.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.org3.decret.com
+    networks:
+      - byfn
