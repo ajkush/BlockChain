@@ -298,6 +298,18 @@ function generateChannelArtifacts() {
     exit 1
   fi
   echo
+
+  echo
+  echo "#################################################################"
+  echo "#######    Generating anchor peer update for Org3MSP   ##########"
+  echo "#################################################################"
+  configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate \
+  ./channel-artifacts/Org3MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org3MSP
+  if [ "$?" -ne 0 ]; then
+    echo "Failed to generate anchor peer update for Org3MSP..."
+    exit 1
+  fi
+  echo
 }
 
 # Obtain the OS and Architecture string that will be used to select the correct
