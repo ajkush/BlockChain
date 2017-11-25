@@ -18,11 +18,11 @@ LANGUAGE="$3"
 LANGUAGE=`echo "$LANGUAGE" | tr [:upper:] [:lower:]`
 COUNTER=1
 MAX_RETRY=5
-ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/decret.com/orderers/orderer.decret.com/msp/tlscacerts/tlsca.decret.com-cert.pem
+ORDERER_CA=./crypto-config/ordererOrganizations/decret.com/tlsca/tlsca.decret.com-cert.pem
 
-CC_SRC_PATH="github.com/chaincode/chaincode_example02/go/"
+CC_SRC_PATH="../../chaincode/go/"
 if [ "$LANGUAGE" = "node" ]; then
-	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/chaincode_example02/node/"
+	CC_SRC_PATH="../../chaincode/node/"
 fi
 
 echo "Channel name : "$CHANNEL_NAME
@@ -41,8 +41,8 @@ setGlobals () {
 
 	if [ $1 -eq 0 -o $1 -eq 1 ] ; then
 		CORE_PEER_LOCALMSPID="Org1MSP"
-		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.decret.com/peers/peer0.org1.decret.com/tls/ca.crt
-		CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.decret.com/users/Admin@org1.decret.com/msp
+		CORE_PEER_TLS_ROOTCERT_FILE=./crypto-config/peerOrganizations/org1.decret.com/peers/peer0.org1.decret.com/tls/ca.crt
+		CORE_PEER_MSPCONFIGPATH=./crypto-config/peerOrganizations/org1.decret.com/users/Admin@org1.decret.com/msp
 		if [ $1 -eq 0 ]; then
 			CORE_PEER_ADDRESS=peer0.org1.decret.com:7051
 		else
@@ -50,8 +50,8 @@ setGlobals () {
 		fi
 	else
 		CORE_PEER_LOCALMSPID="Org2MSP"
-		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.decret.com/peers/peer0.org2.decret.com/tls/ca.crt
-		CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.decret.com/users/Admin@org2.decret.com/msp
+		CORE_PEER_TLS_ROOTCERT_FILE=./crypto-config/peerOrganizations/org2.decret.com/peers/peer0.org2.decret.com/tls/ca.crt
+		CORE_PEER_MSPCONFIGPATH=./crypto-config/peerOrganizations/org2.decret.com/users/Admin@org2.decret.com/msp
 		if [ $1 -eq 2 ]; then
 			CORE_PEER_ADDRESS=peer0.org2.decret.com:7051
 		else
